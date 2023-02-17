@@ -31,6 +31,11 @@ export function NavBar() {
                 Posts
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink to="/comments" className="nav-link">
+                Comments
+              </NavLink>
+            </li>
           </ul>
         </div>
       </div>

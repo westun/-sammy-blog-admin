@@ -1,8 +1,9 @@
 import httpServices from "./httpServices";
+import config from "../config.json";
 
-const apiUrl = "http://localhost:3000/";
+const apiUrl = config.apiUrl;
 
-const apiEndpoint = `${apiUrl}posts`;
+const apiEndpoint = `${apiUrl}/posts`;
 
 export function getPosts() {
   return httpServices.get(apiEndpoint);
