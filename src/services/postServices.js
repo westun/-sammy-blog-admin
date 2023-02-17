@@ -13,11 +13,10 @@ export function getPost(postId) {
   return httpServices.get(`${apiEndpoint}/${postId}`);
 }
 
+export function addPost(post) {
+  return httpServices.post(apiEndpoint, post);
+}
+
 export function updatePost(post) {
-  try {
-    console.log("update post called with", post);
-    return httpServices.put(`${apiEndpoint}/${post.id}`, post);
-  } catch (error) {
-    console.log(error);
-  }
+  return httpServices.put(`${apiEndpoint}/${post.id}`, post);
 }
