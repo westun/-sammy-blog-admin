@@ -12,6 +12,7 @@ export default function PostEdit() {
   const [author, setAuthor] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [post, setPost] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
   const inputRef = useRef(null);
   const { id: postIdParam } = useParams();
   const navigate = useNavigate();
@@ -56,14 +57,19 @@ export default function PostEdit() {
 
     console.log(postData);
 
+    setIsSaving(true);
+
     if (postData.id) {
       console.log("update post method executing");
-      return await updatePost(postData);
+      await updatePost(postData);
+      setIsSaving(false);
+      return;
     }
 
     console.log("Add post method executing");
     const { data } = await addPost(postData);
     setPost(data);
+    setIsSaving(false);
     navigate(`/posts/${data.id}`);
   }
 
@@ -130,8 +136,12 @@ export default function PostEdit() {
         <button className="btn btn-primary" onClick={handlePreview}>
           Preview
         </button>
-        <button className="btn btn-primary ms-2" onClick={handleSave}>
-          Save
+        <button
+          className="btn btn-primary ms-2"
+          onClick={handleSave}
+          disabled={isSaving}
+        >
+          {isSaving ? "Please wait..." : "Save"}
         </button>
       </p>
       <div dangerouslySetInnerHTML={{ __html: html }}></div>
