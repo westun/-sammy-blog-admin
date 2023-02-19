@@ -1,6 +1,8 @@
 import React from "react";
 
 export function Home() {
+  console.log(process.env.APPSETTING_apikey);
+
   return (
     <div>
       <h1>Home</h1>;
