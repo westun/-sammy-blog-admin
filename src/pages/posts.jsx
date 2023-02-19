@@ -2,14 +2,21 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import * as postService from "../services/postServices";
 import moment from "moment/moment";
+import Spinner from "../components/common/spinner";
 
 export default function Posts() {
   const [posts, setPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     async function loadPosts() {
       const { data: postData } = await postService.getPosts();
       setPosts(postData);
+
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
     }
 
     loadPosts();
@@ -17,6 +24,10 @@ export default function Posts() {
 
   function formatedDate(date) {
     return moment(date).format("MMMM Do YYYY");
+  }
+
+  if (isLoading) {
+    return <Spinner />;
   }
 
   return (
@@ -36,9 +47,17 @@ export default function Posts() {
                 <h5 className="card-title">{post.title}</h5>
                 <p className="card-text">{post.description}</p>
                 <p>{formatedDate(post.date)}</p>
-                <Link to={`/posts/${post.id}`} className="btn btn-primary">
-                  Edit
-                </Link>
+                <p>
+                  <Link to={`/posts/${post.id}`} className="btn btn-primary">
+                    Edit
+                  </Link>
+                  <Link
+                    to={`/posts/view/${post.id}`}
+                    className="btn btn-primary ms-3"
+                  >
+                    View
+                  </Link>
+                </p>
               </div>
             </div>
           </div>
