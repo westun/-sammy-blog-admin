@@ -1,10 +1,10 @@
 import React from "react";
-import { NavBar } from "./components/navbar";
 import { Route, Routes } from "react-router-dom";
 import { Home } from "./pages/home";
 import Posts from "./pages/posts";
 import Comments from "./pages/comments";
-import Footer from "./components/footer";
+import NavBar from "./components/layout/navbar";
+import Footer from "./components/layout/footer";
 import PostEdit from "./pages/postEdit";
 import NotFound from "./pages/notfound";
 import Login from "./pages/login";
