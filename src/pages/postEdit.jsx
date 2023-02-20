@@ -4,7 +4,9 @@ import { useRef } from "react";
 import { getPost, updatePost, addPost } from "../services/postServices";
 import { useNavigate, useParams } from "react-router-dom";
 import Input from "../components/common/input";
+import moment from "moment";
 import "jodit/build/jodit.min.css";
+import Post from "../components/post/post";
 
 export default function PostEdit() {
   const [html, setHtml] = useState("");
@@ -14,6 +16,7 @@ export default function PostEdit() {
   const [imageUrl, setImageUrl] = useState("");
   const [post, setPost] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [ispreviewing, setIsPreviewing] = useState(false);
   const inputRef = useRef(null);
   const { id: postIdParam } = useParams();
   const navigate = useNavigate();
@@ -41,6 +44,7 @@ export default function PostEdit() {
 
   function handlePreview() {
     setHtml(inputRef.current.value);
+    setIsPreviewing(true);
   }
 
   async function handleSave() {
@@ -117,7 +121,10 @@ export default function PostEdit() {
           {isSaving ? "Please wait..." : "Save"}
         </button>
       </p>
-      <div dangerouslySetInnerHTML={{ __html: html }}></div>
+
+      {ispreviewing && (
+        <Post post={{ title, author, date: post.date, content: html }} />
+      )}
     </div>
   );
 }

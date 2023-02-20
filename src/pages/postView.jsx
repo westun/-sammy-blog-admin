@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getPost } from "../services/postServices";
-import moment from "moment";
+import Post from "../components/post/post";
 
 export default function PostView() {
   const { id } = useParams();
@@ -16,21 +16,5 @@ export default function PostView() {
     loadPost();
   }, []);
 
-  function getFormatedDate() {
-    return moment(post.dateCreated).format("MMMM Do YYYY");
-  }
-
-  return (
-    <div>
-      <h1>{post.title}</h1>
-      <div>
-        Written by: {post.author} {" | "} {getFormatedDate()}
-      </div>
-      <hr />
-      <div
-        className="mt-3"
-        dangerouslySetInnerHTML={{ __html: post.content }}
-      ></div>
-    </div>
-  );
+  return <Post post={post} />;
 }
