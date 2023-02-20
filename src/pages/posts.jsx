@@ -51,11 +51,12 @@ export default function Posts() {
       </div>
       <div className="row">
         {posts.map((post) => (
-          <div key={post.id} className="col-4 mb-3">
+          <div key={post.id} className="col-lg-4 col-md-6 mb-3">
             <Card
               imageUrl={post.imageUrl}
               title={post.title}
               description={post.description}
+              styles={{ width: "18rem" }}
             >
               <p>{formatedDate(post.date)}</p>
               <p>
