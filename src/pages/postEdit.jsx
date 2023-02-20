@@ -3,6 +3,7 @@ import { Jodit } from "jodit";
 import { useRef } from "react";
 import { getPost, updatePost, addPost } from "../services/postServices";
 import { useNavigate, useParams } from "react-router-dom";
+import Input from "../components/common/input";
 import "jodit/build/jodit.min.css";
 
 export default function PostEdit() {
@@ -91,46 +92,18 @@ export default function PostEdit() {
 
   return (
     <div>
-      <div className="my-3">
-        <label className="me-2">
-          <strong>Title:</strong>
-        </label>
-        <input
-          value={title}
-          className="form-control"
-          onChange={handleTitleChange}
-        />
-      </div>
-      <div className="my-3">
-        <label className="me-2">
-          <strong>Description:</strong>
-        </label>
-        <textarea
-          value={description}
-          className="form-control"
-          onChange={handleDescriptionChange}
-        ></textarea>
-      </div>
-      <div className="my-3">
-        <label className="me-2">
-          <strong>Author:</strong>
-        </label>
-        <input
-          value={author}
-          className="form-control"
-          onChange={handleAuthorChange}
-        />
-      </div>
-      <div className="my-3">
-        <label className="me-2">
-          <strong>Cover Url:</strong>
-        </label>
-        <input
-          value={imageUrl}
-          className="form-control"
-          onChange={handleImageUrlChange}
-        />
-      </div>
+      <Input value={title} label="Title" onChange={handleTitleChange} />
+      <Input
+        value={description}
+        label="Description"
+        onChange={handleDescriptionChange}
+      />
+      <Input value={author} label="Author" onChange={handleAuthorChange} />
+      <Input
+        value={imageUrl}
+        label="Cover Url"
+        onChange={handleImageUrlChange}
+      />
       <textarea id="editor" name="editor" ref={inputRef}></textarea>
       <p className="mt-3">
         <button className="btn btn-primary" onClick={handlePreview}>
