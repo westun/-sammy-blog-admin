@@ -5,7 +5,9 @@ export default function Input(props) {
 
   return (
     <div className="mb-3">
-      <label className="form-label">{label}</label>
+      <label className="form-label">
+        <strong>{label}</strong>
+      </label>
       <input
         className="form-control"
         type={type ? type : "text"}
