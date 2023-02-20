@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Joi from "joi";
+import Input from "./../components/common/input";
 
 export default function Login() {
   const [fields, setFields] = useState({ username: "", password: "" });
@@ -36,7 +37,7 @@ export default function Login() {
   }
 
   function doSubmit() {
-    console.log("submitted");
+    console.log("submitted", fields);
   }
 
   return (
@@ -45,34 +46,21 @@ export default function Login() {
       <div className="row">
         <div className="col-6">
           <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label className="form-label">Email</label>
-              <input
-                type="text"
-                className="form-control"
-                id="username"
-                name="username"
-                value={fields.username}
-                onChange={handleFieldChange}
-              />
-              {errors["username"] && (
-                <div className="alert alert-danger">{errors["username"]}</div>
-              )}
-            </div>
-            <div className="mb-3">
-              <label className="form-label">Password</label>
-              <input
-                type="password"
-                className="form-control"
-                id="password"
-                name="password"
-                value={fields.password}
-                onChange={handleFieldChange}
-              />
-              {errors["password"] && (
-                <div className="alert alert-danger">{errors["password"]}</div>
-              )}
-            </div>
+            <Input
+              name="username"
+              label="Username"
+              value={fields.username}
+              error={errors["username"]}
+              onChange={handleFieldChange}
+            />
+            <Input
+              type="password"
+              name="password"
+              label="Password"
+              value={fields.password}
+              error={errors["password"]}
+              onChange={handleFieldChange}
+            />
             <div>
               <button className="btn btn-primary">Login</button>
             </div>
