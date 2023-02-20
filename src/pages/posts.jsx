@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import * as postService from "../services/postServices";
 import moment from "moment/moment";
 import Spinner from "../components/common/spinner";
+import Card from "../components/common/card";
 
 export default function Posts() {
   const [posts, setPosts] = useState([]);
@@ -26,6 +27,16 @@ export default function Posts() {
     return moment(date).format("MMMM Do YYYY");
   }
 
+  async function handleRemove(postId) {
+    const doDelete = window.confirm(
+      "Are you sure you want to delete this post?"
+    );
+    if (doDelete) {
+      await postService.deletePost(postId);
+      setPosts((oldPosts) => oldPosts.filter((p) => p.id !== postId));
+    }
+  }
+
   if (isLoading) {
     return <Spinner />;
   }
@@ -41,25 +52,30 @@ export default function Posts() {
       <div className="row">
         {posts.map((post) => (
           <div key={post.id} className="col-4 mb-3">
-            <div className="card">
-              <img src={post.imageUrl} className="card-img-top" alt="" />
-              <div className="card-body">
-                <h5 className="card-title">{post.title}</h5>
-                <p className="card-text">{post.description}</p>
-                <p>{formatedDate(post.date)}</p>
-                <p>
-                  <Link to={`/posts/${post.id}`} className="btn btn-primary">
-                    Edit
-                  </Link>
-                  <Link
-                    to={`/posts/view/${post.id}`}
-                    className="btn btn-primary ms-3"
-                  >
-                    View
-                  </Link>
-                </p>
-              </div>
-            </div>
+            <Card
+              imageUrl={post.imageUrl}
+              title={post.title}
+              description={post.description}
+            >
+              <p>{formatedDate(post.date)}</p>
+              <p>
+                <Link to={`/posts/${post.id}`} className="btn btn-primary">
+                  Edit
+                </Link>
+                <Link
+                  to={`/posts/view/${post.id}`}
+                  className="btn btn-primary ms-2"
+                >
+                  View
+                </Link>
+                <button
+                  className="btn btn-danger ms-2"
+                  onClick={() => handleRemove(post.id)}
+                >
+                  Remove
+                </button>
+              </p>
+            </Card>
           </div>
         ))}
       </div>

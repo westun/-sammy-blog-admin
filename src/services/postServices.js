@@ -20,3 +20,7 @@ export function addPost(post) {
 export function updatePost(post) {
   return httpServices.put(`${apiEndpoint}/${post.id}`, post);
 }
+
+export function deletePost(id) {
+  return httpServices.delete(`${apiEndpoint}/${id}`);
+}
