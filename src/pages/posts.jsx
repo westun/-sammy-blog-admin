@@ -4,6 +4,7 @@ import * as postService from "../services/postServices";
 import moment from "moment/moment";
 import Spinner from "../components/common/spinner";
 import Card from "../components/common/card";
+import { formatDate } from "../util/dateFormater";
 
 export default function Posts() {
   const [posts, setPosts] = useState([]);
@@ -22,10 +23,6 @@ export default function Posts() {
 
     loadPosts();
   }, []);
-
-  function formatedDate(date) {
-    return moment(date).format("MMMM Do YYYY");
-  }
 
   async function handleRemove(postId) {
     const doDelete = window.confirm(
@@ -58,7 +55,7 @@ export default function Posts() {
               description={post.description}
               styles={{ width: "18rem" }}
             >
-              <p>{formatedDate(post.date)}</p>
+              <p>{formatDate(post.date)}</p>
               <p>
                 <Link to={`/posts/${post.id}`} className="btn btn-primary">
                   Edit
