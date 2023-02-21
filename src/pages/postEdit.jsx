@@ -4,9 +4,9 @@ import { useRef } from "react";
 import { getPost, updatePost, addPost } from "../services/postServices";
 import { useNavigate, useParams } from "react-router-dom";
 import Input from "../components/common/input";
-import moment from "moment";
-import "jodit/build/jodit.min.css";
 import Post from "../components/post/post";
+import Joi from "joi";
+import "jodit/build/jodit.min.css";
 
 export default function PostEdit() {
   const [html, setHtml] = useState("");
@@ -15,11 +15,21 @@ export default function PostEdit() {
   const [author, setAuthor] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [post, setPost] = useState("");
+  const [errors, setErrors] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
   const [ispreviewing, setIsPreviewing] = useState(false);
   const inputRef = useRef(null);
   const { id: postIdParam } = useParams();
   const navigate = useNavigate();
+
+  const schema = {
+    title: Joi.string().required().label("title"),
+    description: Joi.string().required().label("Description"),
+    author: Joi.string().required().label("Author"),
+    imageUrl: Joi.string().required().label("Cover Url"),
+  };
+
+  const schemaObj = Joi.object(schema);
 
   useEffect(() => {
     const editor = Jodit.make(inputRef.current);
@@ -48,6 +58,25 @@ export default function PostEdit() {
   }
 
   async function handleSave() {
+    const { error } = schemaObj.validate(
+      { title, description, author, imageUrl },
+      { abortEarly: false }
+    );
+
+    setErrors({});
+
+    if (!error) {
+      return await doSubmit();
+    }
+
+    const errorsObj = {};
+    for (let item of error.details) {
+      errorsObj[item.path[0]] = item.message;
+    }
+    setErrors(errorsObj);
+  }
+
+  async function doSubmit() {
     const htmlContent = inputRef.current.value;
 
     const postData = {
@@ -96,16 +125,32 @@ export default function PostEdit() {
 
   return (
     <div>
-      <Input value={title} label="Title" onChange={handleTitleChange} />
       <Input
-        value={description}
+        label="Title"
+        value={title}
+        name="title"
+        error={errors["title"]}
+        onChange={handleTitleChange}
+      />
+      <Input
         label="Description"
+        value={description}
+        name="description"
+        error={errors["description"]}
         onChange={handleDescriptionChange}
       />
-      <Input value={author} label="Author" onChange={handleAuthorChange} />
       <Input
-        value={imageUrl}
+        label="Author"
+        value={author}
+        name="author"
+        error={errors["author"]}
+        onChange={handleAuthorChange}
+      />
+      <Input
         label="Cover Url"
+        value={imageUrl}
+        name="imageUrl"
+        error={errors["imageUrl"]}
         onChange={handleImageUrlChange}
       />
       <textarea id="editor" name="editor" ref={inputRef}></textarea>
