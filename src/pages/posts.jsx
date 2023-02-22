@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import * as postService from "../services/postServices";
-import moment from "moment/moment";
 import Spinner from "../components/common/spinner";
 import Card from "../components/common/card";
 import { formatDate } from "../util/dateFormater";
+import Search from "../components/common/searchBox";
+import Modal from "react-modal";
+import modalStyles from "../util/modalStyles";
+
+Modal.setAppElement("#root");
 
 export default function Posts() {
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedPost, setSelectedPost] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -24,14 +31,30 @@ export default function Posts() {
     loadPosts();
   }, []);
 
-  async function handleRemove(postId) {
-    const doDelete = window.confirm(
-      "Are you sure you want to delete this post?"
-    );
-    if (doDelete) {
-      await postService.deletePost(postId);
-      setPosts((oldPosts) => oldPosts.filter((p) => p.id !== postId));
+  function handleRemoveConfirm(post) {
+    setSelectedPost(post);
+    setIsModalOpen(true);
+  }
+
+  async function handleRemove() {
+    const postId = selectedPost.id;
+    await postService.deletePost(postId);
+    setPosts((oldPosts) => oldPosts.filter((p) => p.id !== postId));
+    setIsModalOpen(false);
+  }
+
+  function handleSearch(searchQuery) {
+    setSearchQuery(searchQuery);
+  }
+
+  function getPosts() {
+    if (searchQuery) {
+      return posts.filter((p) =>
+        p.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
     }
+
+    return posts;
   }
 
   if (isLoading) {
@@ -46,8 +69,11 @@ export default function Posts() {
           Create New Post
         </Link>
       </div>
+      <div className="mb-3">
+        <Search onChange={handleSearch} />
+      </div>
       <div className="row">
-        {posts.map((post) => (
+        {getPosts().map((post) => (
           <div key={post.id} className="col-lg-4 col-md-6 mb-3">
             <Card
               imageUrl={post.imageUrl}
@@ -68,7 +94,7 @@ export default function Posts() {
                 </Link>
                 <button
                   className="btn btn-danger ms-2"
-                  onClick={() => handleRemove(post.id)}
+                  onClick={() => handleRemoveConfirm(post)}
                 >
                   Remove
                 </button>
@@ -77,6 +103,21 @@ export default function Posts() {
           </div>
         ))}
       </div>
+      <Modal isOpen={isModalOpen} style={modalStyles}>
+        <h2>Are you sure?</h2>
+        <div className="mb-3">Are you sure you want to remove this post?</div>
+        <p className="float-end">
+          <button className="btn btn-primary me-2" onClick={handleRemove}>
+            Ok
+          </button>
+          <button
+            className="btn btn-danger"
+            onClick={() => setIsModalOpen(false)}
+          >
+            Cancel
+          </button>
+        </p>
+      </Modal>
     </div>
   );
 }
