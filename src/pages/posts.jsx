@@ -7,6 +7,8 @@ import { formatDate } from "../util/dateFormater";
 import Search from "../components/common/searchBox";
 import Modal from "react-modal";
 import modalStyles from "../util/modalStyles";
+import Pagination from "../components/common/pagination";
+import { paginate } from "./../util/paginate";
 
 Modal.setAppElement("#root");
 
@@ -16,6 +18,8 @@ export default function Posts() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPost, setSelectedPost] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
 
   useEffect(() => {
     setIsLoading(true);
@@ -47,14 +51,21 @@ export default function Posts() {
     setSearchQuery(searchQuery);
   }
 
+  function handlePageClick(page) {
+    setCurrentPage(page);
+  }
+
   function getPosts() {
+    let filteredPosts = posts;
     if (searchQuery) {
-      return posts.filter((p) =>
+      filteredPosts = posts.filter((p) =>
         p.title.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
-    return posts;
+    filteredPosts = paginate(filteredPosts, pageSize, currentPage);
+
+    return filteredPosts;
   }
 
   if (isLoading) {
@@ -72,6 +83,12 @@ export default function Posts() {
       <div className="mb-3">
         <Search onChange={handleSearch} />
       </div>
+      <Pagination
+        itemCount={posts.length}
+        pageSize={pageSize}
+        currentPage={currentPage}
+        onPageClick={handlePageClick}
+      />
       <div className="row">
         {getPosts().map((post) => (
           <div key={post.id} className="col-lg-4 col-md-6 mb-3">
@@ -103,6 +120,12 @@ export default function Posts() {
           </div>
         ))}
       </div>
+      <Pagination
+        itemCount={posts.length}
+        pageSize={pageSize}
+        currentPage={currentPage}
+        onPageClick={handlePageClick}
+      />
       <Modal isOpen={isModalOpen} style={modalStyles}>
         <h2>Are you sure?</h2>
         <div className="mb-3">Are you sure you want to remove this post?</div>
