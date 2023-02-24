@@ -3,6 +3,7 @@ import Joi from "joi";
 import Input from "./../components/common/input";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../components/common/spinner";
+import LoadingCat from "../components/common/loadingCat";
 import { login } from "../services/authService";
 import { toast } from "react-toastify";
 import CatLogo from "../assets/images/cat_logo.png";
@@ -64,7 +65,7 @@ export default function Login() {
   }
 
   if (isLoading) {
-    return <Spinner />;
+    return <LoadingCat />;
   }
 
   return (
