@@ -4,6 +4,7 @@ import Input from "./../components/common/input";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../components/common/spinner";
 import { login } from "../services/authService";
+import { toast } from "react-toastify";
 import CatLogo from "../assets/images/cat_logo.png";
 
 export default function Login() {
@@ -46,19 +47,19 @@ export default function Login() {
   async function doSubmit() {
     setHasLoginError(false);
     try {
+      setIsLoading(true);
+
       await login({
         email: fields.username,
         password: fields.password,
       });
 
-      setIsLoading(true);
-
       setTimeout(() => {
         navigate("/posts");
       }, 2000);
     } catch (error) {
-      setHasLoginError(true);
-      console.log("catch block run with error: ", error);
+      setIsLoading(false);
+      toast.error("An unexpected error occurred.", { theme: "colored" });
     }
   }
 

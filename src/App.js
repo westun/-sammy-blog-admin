@@ -12,6 +12,8 @@ import PostView from "./pages/postView";
 import Logout from "./pages/logout";
 import ProtectedRoute from "./components/routing/protectedRoute";
 import { isAuthenticated } from "./services/authService";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
 function App() {
@@ -21,6 +23,7 @@ function App() {
 
   return (
     <React.Fragment>
+      <ToastContainer />
       {<NavBar show={isAuthenticated()} />}
       <div className="container">
         <Routes>
