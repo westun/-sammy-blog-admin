@@ -13,6 +13,7 @@ import Logout from "./pages/logout";
 import ProtectedRoute from "./components/routing/protectedRoute";
 import { isAuthenticated } from "./services/authService";
 import { ToastContainer } from "react-toastify";
+import SessionExpiringModal from "./components/layout/sessionExpiringModal";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
@@ -23,6 +24,7 @@ function App() {
 
   return (
     <React.Fragment>
+      <SessionExpiringModal />
       <ToastContainer />
       {<NavBar show={isAuthenticated()} />}
       <div className="container">
@@ -70,7 +72,14 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="*" element={<NotFound />} />
+          <Route
+            path="*"
+            element={
+              <ProtectedRoute>
+                <NotFound />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </div>
       <Footer />

@@ -10,6 +10,10 @@ export async function getToken(credentials) {
   return httpServices.post(apiEndpoint, credentials);
 }
 
+export function currentToken() {
+  return localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
+}
+
 export function tokenIsValid() {
   const existingToken = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
   if (existingToken) {
