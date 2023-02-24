@@ -4,6 +4,7 @@ import Input from "./../components/common/input";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../components/common/spinner";
 import { login } from "../services/authService";
+import CatLogo from "../assets/images/cat_logo.png";
 
 export default function Login() {
   const [fields, setFields] = useState({ username: "", password: "" });
@@ -67,14 +68,17 @@ export default function Login() {
 
   return (
     <div className="mt-3">
-      <h1>Login</h1>
-      {hasLoginError && (
-        <div className="alert alert-danger">
-          The email address or password does not exist.
-        </div>
-      )}
       <div className="row">
         <div className="col-6">
+          <div className="text-center">
+            <img src={CatLogo} />
+          </div>
+          <h1>Login</h1>
+          {hasLoginError && (
+            <div className="alert alert-danger">
+              The email address or password does not exist.
+            </div>
+          )}
           <form onSubmit={handleSubmit}>
             <Input
               name="username"
