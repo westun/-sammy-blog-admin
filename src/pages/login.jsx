@@ -66,7 +66,7 @@ export default function Login() {
   }
 
   return (
-    <React.Fragment>
+    <div className="mt-3">
       <h1>Login</h1>
       {hasLoginError && (
         <div className="alert alert-danger">
@@ -97,6 +97,6 @@ export default function Login() {
           </form>
         </div>
       </div>
-    </React.Fragment>
+    </div>
   );
 }

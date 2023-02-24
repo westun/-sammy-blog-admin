@@ -1,7 +1,11 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 
-export default function NavBar() {
+export default function NavBar({ show }) {
+  if (!show) {
+    return;
+  }
+
   return (
     <nav className="navbar navbar-expand-lg bg-light">
       <div className="container-fluid">

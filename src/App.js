@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { Home } from "./pages/home";
 import Posts from "./pages/posts";
 import Comments from "./pages/comments";
@@ -10,21 +10,63 @@ import NotFound from "./pages/notfound";
 import Login from "./pages/login";
 import PostView from "./pages/postView";
 import Logout from "./pages/logout";
+import ProtectedRoute from "./components/routing/protectedRoute";
+import { isAuthenticated } from "./services/authService";
 import "./App.css";
 
 function App() {
+  //this exists to rerender the App component each time the location changes
+  // which one use is for hiding/showing the navbar
+  const location = useLocation();
+
   return (
     <React.Fragment>
-      <NavBar />
+      {<NavBar show={isAuthenticated()} />}
       <div className="container">
         <Routes>
-          <Route path="/posts/view/:id" element={<PostView />} />
-          <Route path="/posts/:id" element={<PostEdit />} />
-          <Route path="/posts" element={<Posts />} />
-          <Route path="/comments" element={<Comments />} />
+          <Route
+            path="/posts/view/:id"
+            element={
+              <ProtectedRoute>
+                <PostView />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/posts/:id"
+            element={
+              <ProtectedRoute>
+                <PostEdit />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/posts"
+            element={
+              <ProtectedRoute>
+                <Posts />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/comments"
+            element={
+              <ProtectedRoute>
+                <Comments />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
-          <Route path="/" exact element={<Home />} />
+          <Route
+            path="/"
+            exact
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
