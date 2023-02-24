@@ -87,7 +87,7 @@ export default function Login() {
   return (
     <div className="mt-3">
       <div className="row">
-        <div className="col-6">
+        <div className="col-lg-6">
           <div className="text-center">
             <img src={CatLogo} />
           </div>
