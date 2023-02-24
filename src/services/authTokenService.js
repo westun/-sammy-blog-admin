@@ -7,7 +7,7 @@ const apiUrl = config.apiUrl;
 const apiEndpoint = `${apiUrl}/auth/login`;
 
 export async function getToken(credentials) {
-  return await httpServices.post(apiEndpoint, credentials);
+  return httpServices.post(apiEndpoint, credentials);
 }
 
 export function tokenIsValid() {

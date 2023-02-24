@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import Joi from "joi";
 import Input from "./../components/common/input";
 import { useNavigate } from "react-router-dom";
-import Spinner from "../components/common/spinner";
 import LoadingCat from "../components/common/loadingCat";
 import { login } from "../services/authService";
 import { toast } from "react-toastify";
 import CatLogo from "../assets/images/cat_logo.png";
+import { isAuthenticated } from "./../services/authService";
 
 export default function Login() {
   const [fields, setFields] = useState({ username: "", password: "" });
@@ -15,8 +15,15 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  if (isAuthenticated()) {
+    //don't know why using setTimeout causes this to work
+    setTimeout(() => {
+      return navigate("/posts");
+    }, 1);
+  }
+
   const schema = {
-    username: Joi.string().required().label("Username"),
+    username: Joi.string().required().label("Email Address"),
     password: Joi.string().required().label("Password"),
   };
 
@@ -57,10 +64,19 @@ export default function Login() {
 
       setTimeout(() => {
         navigate("/posts");
+        //to fix bug with token not being retreived from session storage after logging in
+        window.location.reload();
       }, 2000);
     } catch (error) {
-      setIsLoading(false);
-      toast.error("An unexpected error occurred.", { theme: "colored" });
+      if (error.response && error.response.status === 401) {
+        setHasLoginError(true);
+      } else {
+        toast.error("An unexpected error occurred.", { theme: "colored" });
+      }
+
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
     }
   }
 
