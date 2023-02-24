@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export default function NavBar() {
   return (
@@ -20,7 +20,7 @@ export default function NavBar() {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <NavLink to="/" className="nav-link active" aria-current="page">
                 Home
@@ -37,6 +37,11 @@ export default function NavBar() {
               </NavLink>
             </li>
           </ul>
+          <div className="d-flex">
+            <Link to="/logout" className="nav-link">
+              Logout
+            </Link>
+          </div>
         </div>
       </div>
     </nav>

@@ -9,6 +9,7 @@ import PostEdit from "./pages/postEdit";
 import NotFound from "./pages/notfound";
 import Login from "./pages/login";
 import PostView from "./pages/postView";
+import Logout from "./pages/logout";
 import "./App.css";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/posts" element={<Posts />} />
           <Route path="/comments" element={<Comments />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/logout" element={<Logout />} />
           <Route path="/" exact element={<Home />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

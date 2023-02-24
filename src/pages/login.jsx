@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Joi from "joi";
 import Input from "./../components/common/input";
+import { useNavigate } from "react-router-dom";
+import Spinner from "../components/common/spinner";
+import { login } from "../services/authService";
 
 export default function Login() {
   const [fields, setFields] = useState({ username: "", password: "" });
   const [errors, setErrors] = useState({});
+  const [hasLoginError, setHasLoginError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const schema = {
     username: Joi.string().required().label("Username"),
@@ -36,19 +42,43 @@ export default function Login() {
     setErrors(errorsObj);
   }
 
-  function doSubmit() {
-    console.log("submitted", fields);
+  async function doSubmit() {
+    setHasLoginError(false);
+    try {
+      await login({
+        email: fields.username,
+        password: fields.password,
+      });
+
+      setIsLoading(true);
+
+      setTimeout(() => {
+        navigate("/posts");
+      }, 2000);
+    } catch (error) {
+      setHasLoginError(true);
+      console.log("catch block run with error: ", error);
+    }
+  }
+
+  if (isLoading) {
+    return <Spinner />;
   }
 
   return (
     <React.Fragment>
       <h1>Login</h1>
+      {hasLoginError && (
+        <div className="alert alert-danger">
+          The email address or password does not exist.
+        </div>
+      )}
       <div className="row">
         <div className="col-6">
           <form onSubmit={handleSubmit}>
             <Input
               name="username"
-              label="Username"
+              label="Email Address"
               value={fields.username}
               error={errors["username"]}
               onChange={handleFieldChange}
