@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Input from "../components/common/input";
 import Post from "../components/post/post";
 import Joi from "joi";
+import { toast } from "react-toastify";
 import "jodit/build/jodit.min.css";
 
 export default function PostEdit() {
@@ -26,7 +27,7 @@ export default function PostEdit() {
     title: Joi.string().required().label("title"),
     description: Joi.string().required().label("Description"),
     author: Joi.string().required().label("Author"),
-    imageUrl: Joi.string().required().label("Cover Url"),
+    imageUrl: Joi.string().label("Cover Url"),
   };
 
   const schemaObj = Joi.object(schema);
@@ -69,6 +70,10 @@ export default function PostEdit() {
       return await doSubmit();
     }
 
+    toast.error("Some required fields are missing, post did NOT save.", {
+      theme: "colored",
+    });
+
     const errorsObj = {};
     for (let item of error.details) {
       errorsObj[item.path[0]] = item.message;
@@ -89,22 +94,26 @@ export default function PostEdit() {
       content: htmlContent,
     };
 
-    console.log(postData);
-
     setIsSaving(true);
 
     if (postData.id) {
-      console.log("update post method executing");
       await updatePost(postData);
       setIsSaving(false);
+      showSuccessSavingToast();
       return;
     }
 
-    console.log("Add post method executing");
     const { data } = await addPost(postData);
     setPost(data);
     setIsSaving(false);
+    showSuccessSavingToast();
     navigate(`/posts/${data.id}`);
+  }
+
+  function showSuccessSavingToast() {
+    toast.success("Post saved successfully.", {
+      theme: "colored",
+    });
   }
 
   function handleTitleChange(e) {
