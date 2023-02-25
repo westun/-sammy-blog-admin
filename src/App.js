@@ -13,7 +13,7 @@ import Logout from "./pages/logout";
 import ProtectedRoute from "./components/routing/protectedRoute";
 import { isAuthenticated } from "./services/authService";
 import { ToastContainer } from "react-toastify";
-import SessionExpiringModal from "./components/layout/sessionExpiringModal";
+import SessionExpiringModal from "./components/auth/sessionExpiringModal";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
