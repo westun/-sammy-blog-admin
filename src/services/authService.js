@@ -10,11 +10,17 @@ export async function login(credentials) {
     result.data.token
   );
 
+  localStorage.setItem(
+    AuthConstants.LOCAL_STORAGE_REFRESH_TOKEN,
+    result.data.refreshToken
+  );
+
   return result;
 }
 
 export function logout() {
   localStorage.removeItem(AuthConstants.LOCAL_STORAGE_TOKEN_KEY);
+  localStorage.removeItem(AuthConstants.LOCAL_STORAGE_REFRESH_TOKEN);
 
   return Promise.resolve(true);
 }
@@ -27,3 +33,5 @@ export function isAuthenticated() {
 
   return !isTokenExpired(token);
 }
+
+export function RenewLogin() {}
