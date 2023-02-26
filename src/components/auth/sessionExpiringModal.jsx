@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
 import modalStyles from "../../util/modalStyles";
 import { secondsUntilExpire } from "../../util/authToken";
-import { currentToken } from "../../services/authTokenService";
+import { getToken } from "../../store/authTokenStore";
 import { renewLogin } from "../../services/authService";
 
 export default function SessionExpiringModal() {
@@ -14,7 +14,7 @@ export default function SessionExpiringModal() {
 
   useEffect(() => {
     setInterval(() => {
-      const token = currentToken();
+      const { token } = getToken();
       if (!token) {
         return;
       }
