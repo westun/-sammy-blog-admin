@@ -1,11 +1,11 @@
 import axios from "axios";
-import { LOCAL_STORAGE_TOKEN_KEY } from "../constants/authConstants";
-
-const authHeader = "bearer " + localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
+import { getToken } from "../store/authTokenStore";
+import { toast } from "react-toastify";
 
 axios.interceptors.request.use(
   (req) => {
-    req.headers.Authorization = authHeader;
+    const { token } = getToken();
+    req.headers.Authorization = "bearer " + token;
 
     return Promise.resolve(req);
   },
@@ -15,6 +15,20 @@ axios.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+axios.interceptors.response.use(null, (error) => {
+  if (
+    error.response &&
+    error.response.status >= 400 &&
+    error.response.status < 500
+  ) {
+    return Promise.reject(error);
+  }
+
+  toast.error("An unexpected error occurred.", { theme: "colored" });
+
+  return Promise.reject(error);
+});
 
 export default {
   get: axios.get,

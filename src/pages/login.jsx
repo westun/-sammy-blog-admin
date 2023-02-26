@@ -70,8 +70,6 @@ export default function Login() {
     } catch (error) {
       if (error.response && error.response.status === 401) {
         setHasLoginError(true);
-      } else {
-        toast.error("An unexpected error occurred.", { theme: "colored" });
       }
 
       setTimeout(() => {
