@@ -4,7 +4,6 @@ import Input from "./../components/common/input";
 import { useNavigate } from "react-router-dom";
 import LoadingCat from "../components/common/loadingCat";
 import { login } from "../services/authService";
-import { toast } from "react-toastify";
 import CatLogo from "../assets/images/cat_logo.png";
 import { isAuthenticated } from "./../services/authService";
 
