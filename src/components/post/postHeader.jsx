@@ -1,16 +1,12 @@
 import React from "react";
-import moment from "moment";
+import { formatDate } from "../../util/dateFormater";
 
 export default function PostHeader({ post }) {
-  function getFormatedDate() {
-    return moment(post.dateCreated).format("MMMM Do YYYY");
-  }
-
   return (
     <React.Fragment>
       <h1>{post.title}</h1>
       <div>
-        Written by: {post.author} {" | "} {getFormatedDate()}
+        Written by: {post.author} {" | "} {formatDate(post.dateCreated)}
       </div>
     </React.Fragment>
   );
