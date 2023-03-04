@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import { Home } from "./pages/home";
 import Posts from "./pages/posts";
 import Comments from "./pages/comments";
@@ -12,8 +13,8 @@ import PostView from "./pages/postView";
 import Logout from "./pages/logout";
 import ProtectedRoute from "./components/routing/protectedRoute";
 import { isAuthenticated } from "./services/authService";
-import { ToastContainer } from "react-toastify";
 import SessionExpiringModal from "./components/auth/sessionExpiringModal";
+import ImageUpload from "./pages/imageUpload";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
@@ -50,6 +51,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Posts />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/imageupload"
+            element={
+              <ProtectedRoute>
+                <ImageUpload />
               </ProtectedRoute>
             }
           />

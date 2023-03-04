@@ -37,6 +37,16 @@ export default function NavBar({ show }) {
               </NavLink>
             </li>
             <li className="nav-item">
+              <NavLink to="/imageupload" className="nav-link">
+                Image Upload
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to="/comments" className="nav-link">
+                Images
+              </NavLink>
+            </li>
+            <li className="nav-item">
               <NavLink to="/comments" className="nav-link">
                 Comments
               </NavLink>
