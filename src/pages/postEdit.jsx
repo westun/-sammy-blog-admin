@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Jodit } from "jodit";
-import { useRef } from "react";
-import { getPost, updatePost, addPost } from "../services/postServices";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { Jodit } from "jodit";
+import Joi from "joi";
+import { getPost, updatePost, addPost } from "../services/postServices";
 import Input from "../components/common/input";
 import Post from "../components/post/post";
-import Joi from "joi";
-import { toast } from "react-toastify";
 import "jodit/build/jodit.min.css";
 
 export default function PostEdit() {
@@ -27,7 +26,7 @@ export default function PostEdit() {
     title: Joi.string().required().label("title"),
     description: Joi.string().required().label("Description"),
     author: Joi.string().required().label("Author"),
-    imageUrl: Joi.string().label("Cover Url"),
+    imageUrl: Joi.string().label("Cover Image Url"),
   };
 
   const schemaObj = Joi.object(schema);
@@ -156,7 +155,7 @@ export default function PostEdit() {
         onChange={handleAuthorChange}
       />
       <Input
-        label="Cover Url"
+        label="Cover Image Url"
         value={imageUrl}
         name="imageUrl"
         error={errors["imageUrl"]}
