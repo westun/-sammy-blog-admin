@@ -55,7 +55,12 @@ export default function ImageUpload() {
     <React.Fragment>
       <h1>Image Upload</h1>
       <div className="mb-2">
-        <input type="file" accept="img/*" onChange={handleOnChange} />
+        <input
+          className="form-control"
+          type="file"
+          accept="img/*"
+          onChange={handleOnChange}
+        />
       </div>
       {imageData && !file && (
         <div>
