@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import UploadImage from "../services/imageUploadService";
 import Spinner from "../components/common/spinner";
 
-export default function ImageUpload() {
+export default function ImageUpload({ onImageUploaded }) {
   const [file, setFile] = useState();
   const [fileDataUrl, setFileDataUrl] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -41,6 +41,10 @@ export default function ImageUpload() {
       theme: "colored",
     });
     setIsLoading(false);
+
+    if (onImageUploaded) {
+      onImageUploaded(imageData);
+    }
   }
 
   function handleCopyUrl() {

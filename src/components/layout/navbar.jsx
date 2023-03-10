@@ -42,8 +42,8 @@ export default function NavBar({ show }) {
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to="/comments" className="nav-link">
-                Images
+              <NavLink to="/authors" className="nav-link">
+                Authors
               </NavLink>
             </li>
             <li className="nav-item">

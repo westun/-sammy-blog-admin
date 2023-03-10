@@ -11,6 +11,8 @@ import NotFound from "./pages/notfound";
 import Login from "./pages/login";
 import PostView from "./pages/postView";
 import Logout from "./pages/logout";
+import Authors from "./pages/authors";
+import AuthorEdit from "./pages/authorEdit";
 import ProtectedRoute from "./components/routing/protectedRoute";
 import { isAuthenticated } from "./services/authService";
 import SessionExpiringModal from "./components/auth/sessionExpiringModal";
@@ -67,6 +69,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <Comments />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/authors"
+            element={
+              <ProtectedRoute>
+                <Authors />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/authors/:id"
+            element={
+              <ProtectedRoute>
+                <AuthorEdit />
               </ProtectedRoute>
             }
           />

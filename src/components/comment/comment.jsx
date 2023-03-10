@@ -12,15 +12,6 @@ export default function Comment({ comment }) {
   }
 
   return (
-    // <div>
-    //   <p>
-    //     <img src={profileIcon} />
-    //     {comment.user && comment.user.firstName}{" "}
-    //     {formatDate(comment.dateCreated)}
-    //   </p>
-    //   <p>{comment.content}</p>
-    //   <hr />
-    // </div>
     <React.Fragment>
       <div className="card-body p-4">
         <div className="d-flex flex-start">

@@ -5,7 +5,9 @@ import { Jodit } from "jodit";
 import Joi from "joi";
 import { getPost, updatePost, addPost } from "../services/postServices";
 import Input from "../components/common/input";
+import Select from "../components/common/select";
 import Post from "../components/post/post";
+import { getAuthors } from "./../services/authorService";
 import "jodit/build/jodit.min.css";
 
 export default function PostEdit() {
@@ -13,6 +15,7 @@ export default function PostEdit() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [author, setAuthor] = useState("");
+  const [authorOptions, setAuthorOptions] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
   const [post, setPost] = useState("");
   const [errors, setErrors] = useState([]);
@@ -25,7 +28,7 @@ export default function PostEdit() {
   const schema = {
     title: Joi.string().required().label("title"),
     description: Joi.string().required().label("Description"),
-    author: Joi.string().required().label("Author"),
+    author: Joi.number().required().label("Author"),
     imageUrl: Joi.string().label("Cover Image Url"),
   };
 
@@ -45,11 +48,27 @@ export default function PostEdit() {
       inputRef.current.value = data.content;
       setTitle(data.title);
       setDescription(data.description);
-      setAuthor(data.author);
+      setAuthor(data.authorId);
       setImageUrl(data.imageUrl);
     }
 
     loadPost();
+  }, []);
+
+  useEffect(() => {
+    async function getAuthorData() {
+      const { data: authorData } = await getAuthors();
+      const options = authorData.map((author) => {
+        return {
+          value: author.id,
+          text: author.firstName + " " + author.lastName,
+        };
+      });
+
+      setAuthorOptions(options);
+    }
+
+    getAuthorData();
   }, []);
 
   function handlePreview() {
@@ -87,7 +106,7 @@ export default function PostEdit() {
       id: post.id,
       title,
       description,
-      author,
+      authorId: author,
       imageUrl,
       date: post.date ? post.date : new Date().toString(),
       content: htmlContent,
@@ -147,12 +166,13 @@ export default function PostEdit() {
         error={errors["description"]}
         onChange={handleDescriptionChange}
       />
-      <Input
+      <Select
         label="Author"
         value={author}
         name="author"
         error={errors["author"]}
         onChange={handleAuthorChange}
+        options={authorOptions}
       />
       <Input
         label="Cover Image Url"
