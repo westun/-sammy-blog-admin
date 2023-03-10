@@ -3,10 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Jodit } from "jodit";
 import Joi from "joi";
-import { getPost, updatePost, addPost } from "../services/postServices";
 import Input from "../components/common/input";
 import Select from "../components/common/select";
 import Post from "../components/post/post";
+import ImageUploadModal from "../components/image/imageUploadModal";
+import { getPost, updatePost, addPost } from "../services/postServices";
 import { getAuthors } from "./../services/authorService";
 import "jodit/build/jodit.min.css";
 
@@ -21,6 +22,7 @@ export default function PostEdit() {
   const [errors, setErrors] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
   const [ispreviewing, setIsPreviewing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const inputRef = useRef(null);
   const { id: postIdParam } = useParams();
   const navigate = useNavigate();
@@ -56,7 +58,7 @@ export default function PostEdit() {
   }, []);
 
   useEffect(() => {
-    async function getAuthorData() {
+    async function loadAuthorData() {
       const { data: authorData } = await getAuthors();
       const options = authorData.map((author) => {
         return {
@@ -68,7 +70,7 @@ export default function PostEdit() {
       setAuthorOptions(options);
     }
 
-    getAuthorData();
+    loadAuthorData();
   }, []);
 
   function handlePreview() {
@@ -134,20 +136,9 @@ export default function PostEdit() {
     });
   }
 
-  function handleTitleChange(e) {
-    setTitle(e.target.value);
-  }
-
-  function handleDescriptionChange(e) {
-    setDescription(e.target.value);
-  }
-
-  function handleAuthorChange(e) {
-    setAuthor(e.target.value);
-  }
-
-  function handleImageUrlChange(e) {
-    setImageUrl(e.target.value);
+  function handleImageUploaded(imageData) {
+    setImageUrl(imageData.fileUrl);
+    setIsModalOpen(false);
   }
 
   return (
@@ -157,21 +148,21 @@ export default function PostEdit() {
         value={title}
         name="title"
         error={errors["title"]}
-        onChange={handleTitleChange}
+        onChange={(e) => setTitle(e.target.value)}
       />
       <Input
         label="Description"
         value={description}
         name="description"
         error={errors["description"]}
-        onChange={handleDescriptionChange}
+        onChange={(e) => setDescription(e.target.value)}
       />
       <Select
         label="Author"
         value={author}
         name="author"
         error={errors["author"]}
-        onChange={handleAuthorChange}
+        onChange={(e) => setAuthor(e.target.value)}
         options={authorOptions}
       />
       <Input
@@ -179,7 +170,20 @@ export default function PostEdit() {
         value={imageUrl}
         name="imageUrl"
         error={errors["imageUrl"]}
-        onChange={handleImageUrlChange}
+        onChange={(e) => setImageUrl(e.target.value)}
+      />
+      <div className="mb-3">
+        <button
+          className="btn btn-primary"
+          onClick={() => setIsModalOpen(true)}
+        >
+          Upload Photo
+        </button>
+      </div>
+      <ImageUploadModal
+        isModalOpen={isModalOpen}
+        onImageUploaded={handleImageUploaded}
+        onCloseModal={() => setIsModalOpen(false)}
       />
       <textarea id="editor" name="editor" ref={inputRef}></textarea>
       <p className="mt-3">
