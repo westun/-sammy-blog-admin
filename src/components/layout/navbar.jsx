@@ -37,11 +37,6 @@ export default function NavBar({ show }) {
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to="/imageupload" className="nav-link">
-                Image Upload
-              </NavLink>
-            </li>
-            <li className="nav-item">
               <NavLink to="/authors" className="nav-link">
                 Authors
               </NavLink>
@@ -49,6 +44,11 @@ export default function NavBar({ show }) {
             <li className="nav-item">
               <NavLink to="/comments" className="nav-link">
                 Comments
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to="/imageupload" className="nav-link">
+                Image Upload
               </NavLink>
             </li>
           </ul>
