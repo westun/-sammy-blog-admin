@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Author from "../components/author/author";
-import AuthorRemoveModal from "../components/author/authorRemoveModal";
+import ConfirmModal from "../components/common/modal";
 import { getAuthors, deleteAuthor } from "../services/authorService";
-import modalStyles from "../util/modalStyles";
 
 export default function Authors() {
   const [authors, setAuthors] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedAuthor, setSelectedAuthor] = useState();
+  const [selectedAuthor, setSelectedAuthor] = useState({});
 
   useEffect(() => {
     async function LoadAuthors() {
@@ -31,7 +30,7 @@ export default function Authors() {
     const newAuthors = authors.filter((a) => a.id !== selectedAuthor.id);
     setAuthors(newAuthors);
     toast.success("Author removed successfully", { theme: "colored" });
-    setSelectedAuthor(null);
+    setSelectedAuthor({});
   }
 
   return (
@@ -57,11 +56,12 @@ export default function Authors() {
           <hr className="my-0" />
         </div>
       ))}
-      <AuthorRemoveModal
+      <ConfirmModal
+        header={"Are you sure?"}
+        body={`Are you sure you want to remove the author: ${selectedAuthor.firstName} ${selectedAuthor.lastName}`}
         isModalOpen={isModalOpen}
-        onRemoveAuthor={handleRemoveAuthor}
-        onCloseModal={() => setIsModalOpen(false)}
-        modalStyles={modalStyles}
+        onClickOk={handleRemoveAuthor}
+        onClickCancel={() => setIsModalOpen(false)}
       />
     </>
   );

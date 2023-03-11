@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import Modal from "react-modal";
 import { Home } from "./pages/home";
 import Posts from "./pages/posts";
 import Comments from "./pages/comments";
@@ -19,6 +20,8 @@ import SessionExpiringModal from "./components/auth/sessionExpiringModal";
 import ImageUpload from "./pages/imageUpload";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
+
+Modal.setAppElement("#root");
 
 function App() {
   //this exists to rerender the App component each time the location changes

@@ -3,14 +3,10 @@ import { Link } from "react-router-dom";
 import * as postService from "../services/postServices";
 import Spinner from "../components/common/spinner";
 import SearchBox from "../components/common/searchBox";
-import Modal from "react-modal";
-import modalStyles from "../util/modalStyles";
 import Pagination from "../components/common/pagination";
 import { paginate } from "./../util/paginate";
 import PostCard from "../components/post/postCard";
-import PostRemoveModal from "../components/post/postRemoveModal";
-
-Modal.setAppElement("#root");
+import ConfirmModal from "../components/common/modal";
 
 export default function Posts() {
   const [posts, setPosts] = useState([]);
@@ -102,11 +98,12 @@ export default function Posts() {
         currentPage={currentPage}
         onPageClick={handlePageClick}
       />
-      <PostRemoveModal
+      <ConfirmModal
         isModalOpen={isModalOpen}
-        modalStyles={modalStyles}
-        onRemovePost={handleRemove}
-        onCloseModal={() => setIsModalOpen(false)}
+        header="Are you sure?"
+        body={`Are you sure you want to remove the post: ${selectedPost.title}`}
+        onClickCancel={() => setIsModalOpen(false)}
+        onClickOk={handleRemove}
       />
     </div>
   );
