@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Author from "../components/author/author";
-import ConfirmModal from "../components/common/modal";
+import ConfirmModal from "../components/common/confirmModal";
 import { getAuthors, deleteAuthor } from "../services/authorService";
 
 export default function Authors() {

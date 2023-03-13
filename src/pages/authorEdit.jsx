@@ -6,7 +6,6 @@ import Input from "../components/common/input";
 import Spinner from "../components/common/spinner";
 import ImageUploadModal from "../components/image/imageUploadModal";
 import { addAuthor, getAuthor, updateAuthor } from "../services/authorService";
-import AuthorRemoveModal from "../components/author/authorRemoveModal";
 
 export default function AuthorEdit() {
   const [id, setId] = useState();

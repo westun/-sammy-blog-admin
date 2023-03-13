@@ -6,7 +6,7 @@ import SearchBox from "../components/common/searchBox";
 import Pagination from "../components/common/pagination";
 import { paginate } from "./../util/paginate";
 import PostCard from "../components/post/postCard";
-import ConfirmModal from "../components/common/modal";
+import ConfirmModal from "../components/common/confirmModal";
 
 export default function Posts() {
   const [posts, setPosts] = useState([]);
