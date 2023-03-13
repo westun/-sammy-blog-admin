@@ -11,7 +11,7 @@ export default function PostCard({ post, onRemovePost }) {
       description={post.description}
       styles={{ width: "18rem" }}
     >
-      <p>{formatDate(post.date)}</p>
+      <p>{formatDate(post.dateCreated)}</p>
       <p>
         <Link to={`/posts/${post.id}`} className="btn btn-primary">
           Edit
