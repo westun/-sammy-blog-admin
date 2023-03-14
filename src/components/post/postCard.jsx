@@ -9,7 +9,6 @@ export default function PostCard({ post, onRemovePost }) {
       imageUrl={post.imageUrl}
       title={post.title}
       description={post.description}
-      styles={{ width: "18rem" }}
     >
       <p>{formatDate(post.dateCreated)}</p>
       <p>
