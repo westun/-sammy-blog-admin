@@ -2,7 +2,11 @@ import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import "bootstrap/dist/js/bootstrap.min.js"; //imported to fix hamburger menu
 
-export default function NavBar({ show }) {
+interface Props {
+  show: boolean;
+}
+
+export default function NavBar({ show }: Props) {
   if (!show) {
     return;
   }
