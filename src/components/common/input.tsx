@@ -1,6 +1,15 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 
-export default function Input(props) {
+interface Props {
+  name: string;
+  label: string;
+  value: string;
+  type: string;
+  error: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+}
+
+export default function Input(props: Props) {
   const { name, label, value, type, error, onChange } = props;
 
   return (

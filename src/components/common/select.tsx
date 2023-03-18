@@ -1,6 +1,21 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 
-export default function Select(props) {
+export interface SelectOptions {
+  text: string;
+  value: string;
+}
+
+interface Props {
+  name: string;
+  label: string;
+  value: string;
+  type: string;
+  error: string;
+  options: SelectOptions[];
+  onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+}
+
+export default function Select(props: Props) {
   const { name, label, value, type, error, onChange, options = [] } = props;
 
   return (

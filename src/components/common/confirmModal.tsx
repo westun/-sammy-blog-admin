@@ -1,6 +1,14 @@
-import React from "react";
 import Modal from "react-modal";
 import compactModalStyles from "../../util/modalStyles";
+
+interface Props {
+  header: string;
+  body: string;
+  isModalOpen: boolean;
+  modalStyles?: any;
+  onClickOk: () => void;
+  onClickCancel: () => void;
+}
 
 export default function ConfirmModal({
   header,
@@ -9,7 +17,7 @@ export default function ConfirmModal({
   modalStyles,
   onClickOk,
   onClickCancel,
-}) {
+}: Props) {
   return (
     <Modal isOpen={isModalOpen} style={modalStyles || compactModalStyles}>
       <h2>{header}</h2>

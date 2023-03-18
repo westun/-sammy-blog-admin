@@ -1,14 +1,21 @@
 import React from "react";
 import _ from "lodash";
 
+interface Props {
+  itemCount: number;
+  pageSize: number;
+  currentPage: number;
+  onPageClick: (page: number) => void;
+}
+
 export default function Pagination({
   itemCount,
   pageSize,
   currentPage,
   onPageClick,
-}) {
+}: Props) {
   const pageGroupCount = itemCount / pageSize + 1;
-  const pages = _.range(1, pageGroupCount);
+  const pages: number[] = _.range(1, pageGroupCount);
 
   if (pages.length <= 1) {
     return;
