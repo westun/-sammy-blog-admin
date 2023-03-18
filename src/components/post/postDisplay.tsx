@@ -1,8 +1,12 @@
-import React from "react";
 import PostHeader from "./postHeader";
 import PostBody from "./postBody";
+import { Post } from "./types";
 
-export default function Post({ post }) {
+interface Props {
+  post: Post;
+}
+
+export default function PostDisplay({ post }: Props) {
   return (
     <div>
       <PostHeader post={post} />

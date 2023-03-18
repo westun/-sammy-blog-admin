@@ -1,8 +1,12 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import Card from "../common/card";
+import { Post } from "./types";
 
-export default function PostViewSideBar({ posts }) {
+interface Props {
+  posts: Post[];
+}
+
+export default function PostViewSideBar({ posts }: Props) {
   return (
     <div className="sidebar">
       <h2 className="ms-3">More Posts</h2>

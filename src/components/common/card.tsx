@@ -1,6 +1,14 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
-export default function Card(props) {
+interface Props {
+  title: string;
+  description: string;
+  imageUrl: string;
+  styles?: any;
+  children?: ReactNode;
+}
+
+export default function Card(props: Props) {
   const { imageUrl, title, description, styles } = props;
 
   return (

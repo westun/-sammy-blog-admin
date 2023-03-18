@@ -1,7 +1,12 @@
 import React from "react";
 import { formatDate } from "../../util/dateFormater";
+import { Post } from "./types";
 
-export default function PostHeader({ post }) {
+interface Props {
+  post: Post;
+}
+
+export default function PostHeader({ post }: Props) {
   return (
     <React.Fragment>
       <h1>{post.title}</h1>

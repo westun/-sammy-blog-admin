@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getPost, getPosts } from "../services/postServices";
-import Post from "../components/post/post";
 import { getComments } from "../services/commentService";
 import Comments from "../components/comment/comments";
 import Spinner from "../components/common/spinner";
 import PostViewSideBar from "../components/post/postViewSideBar";
+import PostDisplay from "./../components/post/postDisplay";
 
 export default function PostView() {
   const { id } = useParams();
@@ -51,7 +51,7 @@ export default function PostView() {
   return (
     <div className="row">
       <div className="col-md-8">
-        <Post post={post} />
+        <PostDisplay post={post} />
         <hr />
         {isCommentsLoading ? <Spinner /> : <Comments comments={comments} />}
       </div>

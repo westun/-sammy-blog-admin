@@ -5,7 +5,7 @@ import { Jodit } from "jodit";
 import Joi from "joi";
 import Input from "../components/common/input";
 import Select from "../components/common/select";
-import Post from "../components/post/post";
+import PostDisplay from "../components/post/postDisplay";
 import ImageUploadModal from "../components/image/imageUploadModal";
 import { getPost, updatePost, addPost } from "../services/postServices";
 import { getAuthors } from "./../services/authorService";
@@ -200,7 +200,7 @@ export default function PostEdit() {
       </p>
 
       {ispreviewing && (
-        <Post post={{ title, author, date: post.date, content: html }} />
+        <PostDisplay post={{ title, author, date: post.date, content: html }} />
       )}
     </div>
   );

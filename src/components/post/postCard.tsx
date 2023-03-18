@@ -1,9 +1,14 @@
-import React from "react";
 import Card from "../common/card";
 import { formatDate } from "../../util/dateFormater";
 import { Link } from "react-router-dom";
+import { Post } from "./types";
 
-export default function PostCard({ post, onRemovePost }) {
+interface Props {
+  post: Post;
+  onRemovePost: (post: Post) => void;
+}
+
+export default function PostCard({ post, onRemovePost }: Props) {
   return (
     <Card
       imageUrl={post.imageUrl}
