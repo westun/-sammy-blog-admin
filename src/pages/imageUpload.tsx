@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, ChangeEvent } from "react";
 import { toast } from "react-toastify";
 import UploadImage from "../services/imageUploadService";
 import Spinner from "../components/common/spinner";
+import { ImageUploadDTO } from "../services/types";
 
-export default function ImageUpload({ onImageUploaded }) {
-  const [file, setFile] = useState();
-  const [fileDataUrl, setFileDataUrl] = useState();
+interface Props {
+  onImageUploaded: (imageData: any) => void;
+}
+
+export default function ImageUpload({ onImageUploaded }: Props) {
+  const [file, setFile] = useState<File | null>();
+  const [fileDataUrl, setFileDataUrl] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
-  const [imageData, setImageData] = useState();
+  const [imageData, setImageData] = useState<any>();
 
   useEffect(() => {
     if (!file) {
@@ -15,21 +20,25 @@ export default function ImageUpload({ onImageUploaded }) {
     }
 
     const fileReader = new FileReader();
-    fileReader.onload = (e) => {
-      setFileDataUrl(e.target.result);
+    fileReader.onload = (e: ProgressEvent<FileReader>) => {
+      if (e.target != null) {
+        setFileDataUrl(e.target.result);
+      }
     };
 
     fileReader.readAsDataURL(file);
   }, [file]);
 
-  function handleOnChange(e) {
-    const fileFromInput = e.target.files[0];
-    setFile(fileFromInput);
+  function handleOnChange(e: ChangeEvent<HTMLInputElement>) {
+    if (e.target !== null && e.target.files !== null) {
+      const fileFromInput = e.target.files[0];
+      setFile(fileFromInput);
+    }
   }
 
   async function handleUpload() {
-    const image = {
-      fileName: file.name,
+    const image: ImageUploadDTO = {
+      fileName: file ? file.name : "",
       dataUrl: fileDataUrl,
     };
 

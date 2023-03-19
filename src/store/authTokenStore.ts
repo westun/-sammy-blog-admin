@@ -8,7 +8,7 @@ export function getToken() {
   return { token, refreshToken };
 }
 
-export function saveToken(token, refreshToken) {
+export function saveToken(token: string, refreshToken: string) {
   localStorage.setItem(AuthConstants.LOCAL_STORAGE_TOKEN_KEY, token);
   localStorage.setItem(AuthConstants.LOCAL_STORAGE_REFRESH_TOKEN, refreshToken);
 }

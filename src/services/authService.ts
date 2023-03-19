@@ -1,9 +1,9 @@
-import { getToken, getRefreshToken } from "./authTokenService";
 import * as authTokenService from "./authTokenService";
 import { isTokenExpired } from "../util/authToken";
 import * as authTokenStore from "../store/authTokenStore";
+import { Credentials } from './types';
 
-export async function login(credentials) {
+export async function login(credentials: Credentials) {
   const result = await authTokenService.getToken(credentials);
 
   authTokenStore.saveToken(result.data.token, result.data.refreshToken);
@@ -19,8 +19,8 @@ export async function renewLogin() {
   const tokenResult = authTokenStore.getToken();
 
   const { data: newToken } = await authTokenService.getRefreshToken(
-    tokenResult.token,
-    tokenResult.refreshToken
+    tokenResult.token ?? "",
+    tokenResult.refreshToken ?? ""
   );
 
   authTokenStore.saveToken(newToken.token, newToken.refreshToken);
