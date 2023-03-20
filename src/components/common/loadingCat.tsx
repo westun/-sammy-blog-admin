@@ -1,4 +1,3 @@
-import React from "react";
 import CatLickingPawImg from "../../assets/images/cat_licking_paw.gif";
 
 export default function LoadingCat() {

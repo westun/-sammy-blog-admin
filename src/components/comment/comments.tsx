@@ -1,7 +1,12 @@
 import React from "react";
-import Comment from "./comment";
+import CommentDisplay from "./commentDisplay";
+import { Comment } from "./types";
 
-export default function Comments({ comments }) {
+interface Props {
+  comments: Comment[];
+}
+
+export default function Comments({ comments }: Props) {
   return (
     <div className="container mb-5 py-5">
       <div className="row d-flex justify-content-center">
@@ -11,7 +16,7 @@ export default function Comments({ comments }) {
             <p className="fw-light mb-4 pb-2 ps-4">Latest Comments by users</p>
             {comments.map((comment) => (
               <React.Fragment key={comment.id}>
-                <Comment comment={comment} />
+                <CommentDisplay comment={comment} />
               </React.Fragment>
             ))}
           </div>

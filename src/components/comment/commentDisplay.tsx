@@ -1,8 +1,13 @@
 import React from "react";
 import { formatDate } from "../../util/dateFormater";
 import profileIcon from "../../assets/images/iconprof.png";
+import { Comment } from "./types";
 
-export default function Comment({ comment }) {
+interface Props {
+  comment: Comment;
+}
+
+export default function CommentDisplay({ comment }: Props) {
   function getUsername() {
     if (comment.user && comment.user.firstName && comment.user.lastName) {
       return comment.user.firstName + " " + comment.user.lastName;
