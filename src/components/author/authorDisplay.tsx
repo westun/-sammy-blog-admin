@@ -1,7 +1,11 @@
-import React from "react";
 import profileIcon from "../../assets/images/iconprof.png";
+import { Author } from "./types";
 
-export default function Author({ author }) {
+interface Props {
+  author: Author;
+}
+
+export default function AuthorDisplay({ author }: Props) {
   return (
     <>
       <div className="card-body p-4">

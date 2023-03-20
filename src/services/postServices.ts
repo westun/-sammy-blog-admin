@@ -1,5 +1,6 @@
 import httpServices from "./httpServices";
 import config from "../config.json";
+import { Post } from "../components/post/types";
 
 const apiUrl = config.apiUrl;
 
@@ -9,18 +10,18 @@ export function getPosts() {
   return httpServices.get(apiEndpoint);
 }
 
-export function getPost(postId) {
+export function getPost(postId: number) {
   return httpServices.get(`${apiEndpoint}/${postId}`);
 }
 
-export function addPost(post) {
+export function addPost(post: Post) {
   return httpServices.post(apiEndpoint, post);
 }
 
-export function updatePost(post) {
+export function updatePost(post: Post) {
   return httpServices.put(`${apiEndpoint}/${post.id}`, post);
 }
 
-export function deletePost(id) {
+export function deletePost(id: number) {
   return httpServices.delete(`${apiEndpoint}/${id}`);
 }
