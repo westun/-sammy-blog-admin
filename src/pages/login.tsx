@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import Joi from "joi";
 import Input from "./../components/common/input";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ import { isAuthenticated } from "./../services/authService";
 
 export default function Login() {
   const [fields, setFields] = useState({ username: "", password: "" });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<any>({});
   const [hasLoginError, setHasLoginError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -28,13 +28,13 @@ export default function Login() {
 
   const schemaObj = Joi.object(schema);
 
-  function handleFieldChange(e) {
-    const newFields = { ...fields };
+  function handleFieldChange(e: ChangeEvent<HTMLInputElement>) {
+    const newFields: any = { ...fields };
     newFields[e.target.name] = e.target.value;
     setFields(newFields);
   }
 
-  function handleSubmit(e) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     setErrors({});
@@ -44,7 +44,7 @@ export default function Login() {
       return doSubmit();
     }
 
-    const errorsObj = {};
+    const errorsObj: any = {};
     for (let item of error.details) {
       errorsObj[item.path[0]] = item.message;
     }
@@ -66,7 +66,7 @@ export default function Login() {
         //to fix bug with token not being retreived from session storage after logging in
         window.location.reload();
       }, 2000);
-    } catch (error) {
+    } catch (error: any) {
       if (error.response && error.response.status === 401) {
         setHasLoginError(true);
       }

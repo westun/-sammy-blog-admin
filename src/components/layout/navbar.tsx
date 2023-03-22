@@ -8,7 +8,7 @@ interface Props {
 
 export default function NavBar({ show }: Props) {
   if (!show) {
-    return;
+    return null;
   }
 
   return (
