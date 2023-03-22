@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Joi from "joi";
@@ -6,17 +6,20 @@ import Input from "../components/common/input";
 import Spinner from "../components/common/spinner";
 import ImageUploadModal from "../components/image/imageUploadModal";
 import { addAuthor, getAuthor, updateAuthor } from "../services/authorService";
+import { ImageDataDTO } from "../services/types";
+import { Author } from "../components/author/types";
 
 export default function AuthorEdit() {
-  const [id, setId] = useState();
+  const [id, setId] = useState<string>();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [photoUrl, setPhotoUrl] = useState("");
-  const [errors, setErrors] = useState("");
+  const [errors, setErrors] = useState<any>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { id: authorId } = useParams();
+  const params = useParams();
+  const authorId = params.id as string;
 
   const schema = {
     firstName: Joi.string().required().label("First Name"),
@@ -33,7 +36,7 @@ export default function AuthorEdit() {
     setId(authorId);
 
     async function getAuthorData() {
-      const { data: authorData } = await getAuthor(authorId);
+      const { data: authorData } = await getAuthor(parseInt(authorId));
       setFirstName(authorData.firstName);
       setLastName(authorData.lastName);
       setPhotoUrl(authorData.imageUrl);
@@ -42,7 +45,7 @@ export default function AuthorEdit() {
     getAuthorData();
   }, []);
 
-  function handleSubmit(e) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const author = {
@@ -55,7 +58,7 @@ export default function AuthorEdit() {
       return doSubmit();
     }
 
-    const errorsObj = {};
+    const errorsObj: any = {};
     for (let item of error.details) {
       errorsObj[item.path[0]] = item.message;
     }
@@ -64,7 +67,8 @@ export default function AuthorEdit() {
   }
 
   async function doSubmit() {
-    const author = {
+    const author: Author = {
+      id: 0,
       firstName,
       lastName,
       imageUrl: photoUrl,
@@ -72,7 +76,7 @@ export default function AuthorEdit() {
 
     const editingAuthor = id;
     if (editingAuthor) {
-      author.id = id;
+      author.id = parseInt(id);
       setIsLoading(true);
       await updateAuthor(author);
       showSuccessSavingToast();
@@ -86,7 +90,8 @@ export default function AuthorEdit() {
     setIsLoading(false);
   }
 
-  function handleOnImageUploaded(imgData) {
+  function handleOnImageUploaded(imgData: ImageDataDTO) {
+    console.log("handle image uploaded");
     setPhotoUrl(imgData.fileUrl);
     setIsModalOpen(false);
   }

@@ -11,7 +11,7 @@ export default function PostHeader({ post }: Props) {
     <React.Fragment>
       <h1>{post.title}</h1>
       <div>
-        Written by: {post.author.firstName} {post.author.lastName} {" | "}{" "}
+        Written by: {post.author?.firstName} {post.author?.lastName} {" | "}{" "}
         {formatDate(post.dateCreated)}
       </div>
     </React.Fragment>

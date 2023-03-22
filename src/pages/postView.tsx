@@ -6,10 +6,21 @@ import Comments from "../components/comment/comments";
 import Spinner from "../components/common/spinner";
 import PostViewSideBar from "../components/post/postViewSideBar";
 import PostDisplay from "./../components/post/postDisplay";
+import { Post } from "../components/post/types";
 
 export default function PostView() {
-  const { id } = useParams();
-  const [post, setPost] = useState({});
+  const params = useParams();
+  const id: number = parseInt(params.id as string);
+  const [post, setPost] = useState<Post>({
+    id: 0,
+    authorId: 0,
+    title: "",
+    description: "",
+    content: "",
+    imageUrl: "",
+    dateCreated: "",
+    author: { id: 0, firstName: "", lastName: "", imageUrl: "" },
+  });
   const [comments, setComments] = useState([]);
   const [isPostsLoading, setIsPostsLoading] = useState(true);
   const [isCommentsLoading, setIsCommentsLoading] = useState(true);

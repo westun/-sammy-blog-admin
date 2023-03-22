@@ -4,11 +4,12 @@ import { toast } from "react-toastify";
 import AuthorDisplay from "./../components/author/authorDisplay";
 import ConfirmModal from "../components/common/confirmModal";
 import { getAuthors, deleteAuthor } from "../services/authorService";
+import { Author } from "../components/author/types";
 
 export default function Authors() {
   const [authors, setAuthors] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedAuthor, setSelectedAuthor] = useState({});
+  const [selectedAuthor, setSelectedAuthor] = useState<Author | null>();
 
   useEffect(() => {
     async function LoadAuthors() {
@@ -19,18 +20,24 @@ export default function Authors() {
     LoadAuthors();
   }, []);
 
-  function handleRemoveModalOpen(author) {
+  function handleRemoveModalOpen(author: Author) {
     setSelectedAuthor(author);
     setIsModalOpen(true);
   }
 
   async function handleRemoveAuthor() {
+    if (!selectedAuthor) {
+      return;
+    }
+
     setIsModalOpen(false);
     await deleteAuthor(selectedAuthor.id);
-    const newAuthors = authors.filter((a) => a.id !== selectedAuthor.id);
+    const newAuthors = authors.filter(
+      (a: Author) => a.id !== selectedAuthor.id
+    );
     setAuthors(newAuthors);
     toast.success("Author removed successfully", { theme: "colored" });
-    setSelectedAuthor({});
+    setSelectedAuthor(null);
   }
 
   return (
@@ -42,7 +49,7 @@ export default function Authors() {
         </Link>
       </div>
 
-      {authors.map((author) => (
+      {authors.map((author: Author) => (
         <div key={author.id}>
           <Link to={`/authors/${author.id}`}>
             <AuthorDisplay author={author} />
@@ -58,7 +65,7 @@ export default function Authors() {
       ))}
       <ConfirmModal
         header={"Are you sure?"}
-        body={`Are you sure you want to remove the author: ${selectedAuthor.firstName} ${selectedAuthor.lastName}`}
+        body={`Are you sure you want to remove the author: ${selectedAuthor?.firstName} ${selectedAuthor?.lastName}`}
         isModalOpen={isModalOpen}
         onClickOk={handleRemoveAuthor}
         onClickCancel={() => setIsModalOpen(false)}

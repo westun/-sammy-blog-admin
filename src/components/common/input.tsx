@@ -4,8 +4,8 @@ interface Props {
   name: string;
   label: string;
   value: string;
-  type: string;
-  error: string;
+  type?: string;
+  error?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 

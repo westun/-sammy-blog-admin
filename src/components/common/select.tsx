@@ -9,14 +9,13 @@ interface Props {
   name: string;
   label: string;
   value: string;
-  type: string;
-  error: string;
+  error?: string;
   options: SelectOptions[];
   onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
 export default function Select(props: Props) {
-  const { name, label, value, type, error, onChange, options = [] } = props;
+  const { name, label, value, error, onChange, options = [] } = props;
 
   return (
     <div className="mb-3">
@@ -25,7 +24,6 @@ export default function Select(props: Props) {
       </label>
       <select
         className="form-control"
-        type={type ? type : "text"}
         id={name}
         name={name}
         value={value}

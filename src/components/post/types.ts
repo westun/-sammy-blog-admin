@@ -8,5 +8,5 @@ export interface Post {
   content: string;
   imageUrl: string;
   dateCreated: string;
-  author: Author;
+  author: Author | undefined | null;
 }

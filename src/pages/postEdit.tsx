@@ -9,6 +9,9 @@ import PostDisplay from "../components/post/postDisplay";
 import ImageUploadModal from "../components/image/imageUploadModal";
 import { getPost, updatePost, addPost } from "../services/postServices";
 import { getAuthors } from "./../services/authorService";
+import { Post } from "../components/post/types";
+import { Author } from "../components/author/types";
+import { ImageDataDTO } from "./../services/types";
 import "jodit/build/jodit.min.css";
 
 export default function PostEdit() {
@@ -18,13 +21,23 @@ export default function PostEdit() {
   const [author, setAuthor] = useState("");
   const [authorOptions, setAuthorOptions] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
-  const [post, setPost] = useState("");
-  const [errors, setErrors] = useState([]);
+  const [post, setPost] = useState<Post>({
+    id: 0,
+    authorId: 0,
+    title: "",
+    description: "",
+    content: "",
+    imageUrl: "",
+    dateCreated: "",
+    author: { id: 0, firstName: "", lastName: "", imageUrl: "" },
+  });
+  const [errors, setErrors] = useState<any>([]);
   const [isSaving, setIsSaving] = useState(false);
   const [ispreviewing, setIsPreviewing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const inputRef = useRef(null);
-  const { id: postIdParam } = useParams();
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const params = useParams();
+  const postIdParam = params.id as string;
   const navigate = useNavigate();
 
   const schema = {
@@ -37,17 +50,19 @@ export default function PostEdit() {
   const schemaObj = Joi.object(schema);
 
   useEffect(() => {
-    const editor = Jodit.make(inputRef.current);
+    const editor = Jodit.make(inputRef.current as HTMLElement);
 
     if (postIdParam === "new") {
       return;
     }
 
     async function loadPost() {
-      const { data } = await getPost(postIdParam);
+      const { data } = await getPost(parseInt(postIdParam));
       setPost(data);
       editor.value = data.content;
-      inputRef.current.value = data.content;
+      if (inputRef && inputRef.current) {
+        inputRef.current.value = data.content;
+      }
       setTitle(data.title);
       setDescription(data.description);
       setAuthor(data.authorId);
@@ -60,7 +75,7 @@ export default function PostEdit() {
   useEffect(() => {
     async function loadAuthorData() {
       const { data: authorData } = await getAuthors();
-      const options = authorData.map((author) => {
+      const options = authorData.map((author: Author) => {
         return {
           value: author.id,
           text: author.firstName + " " + author.lastName,
@@ -74,8 +89,10 @@ export default function PostEdit() {
   }, []);
 
   function handlePreview() {
-    setHtml(inputRef.current.value);
-    setIsPreviewing(true);
+    if (inputRef && inputRef.current) {
+      setHtml(inputRef.current.value);
+      setIsPreviewing(true);
+    }
   }
 
   async function handleSave() {
@@ -94,7 +111,7 @@ export default function PostEdit() {
       theme: "colored",
     });
 
-    const errorsObj = {};
+    const errorsObj: any = {};
     for (let item of error.details) {
       errorsObj[item.path[0]] = item.message;
     }
@@ -102,16 +119,22 @@ export default function PostEdit() {
   }
 
   async function doSubmit() {
+    if (!inputRef || !inputRef.current) {
+      return;
+    }
+
     const htmlContent = inputRef.current.value;
 
-    const postData = {
-      id: post.id,
+    const id = post?.id as number;
+    const postData: Post = {
+      id,
       title,
       description,
-      authorId: author,
+      authorId: parseInt(author),
       imageUrl,
-      date: post.date ? post.date : new Date().toString(),
+      dateCreated: post.dateCreated,
       content: htmlContent,
+      author: null,
     };
 
     setIsSaving(true);
@@ -136,7 +159,7 @@ export default function PostEdit() {
     });
   }
 
-  function handleImageUploaded(imageData) {
+  function handleImageUploaded(imageData: ImageDataDTO) {
     setImageUrl(imageData.fileUrl);
     setIsModalOpen(false);
   }
@@ -200,7 +223,22 @@ export default function PostEdit() {
       </p>
 
       {ispreviewing && (
-        <PostDisplay post={{ title, author, date: post.date, content: html }} />
+        <PostDisplay
+          post={{
+            id: post.id,
+            title,
+            description,
+            authorId: post.author ? post.author.id : 0,
+            imageUrl: post.imageUrl,
+            author: {
+              id: post.author ? post.author.id : 0,
+              firstName: post.author ? post.author.firstName : "",
+              lastName: post.author ? post.author.lastName : "",
+            },
+            dateCreated: post.dateCreated,
+            content: html,
+          }}
+        />
       )}
     </div>
   );

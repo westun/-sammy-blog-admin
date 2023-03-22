@@ -7,12 +7,13 @@ import Pagination from "../components/common/pagination";
 import { paginate } from "./../util/paginate";
 import PostCard from "../components/post/postCard";
 import ConfirmModal from "../components/common/confirmModal";
+import { Post } from "./../components/post/types";
 
 export default function Posts() {
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedPost, setSelectedPost] = useState("");
+  const [selectedPost, setSelectedPost] = useState<Post>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 6;
@@ -31,30 +32,34 @@ export default function Posts() {
     loadPosts();
   }, []);
 
-  function handleRemoveConfirm(post) {
+  function handleRemoveConfirm(post: Post) {
     setSelectedPost(post);
     setIsModalOpen(true);
   }
 
   async function handleRemove() {
+    if (!selectedPost) {
+      return;
+    }
+
     const postId = selectedPost.id;
     await postService.deletePost(postId);
-    setPosts((oldPosts) => oldPosts.filter((p) => p.id !== postId));
+    setPosts((oldPosts) => oldPosts.filter((p: Post) => p.id !== postId));
     setIsModalOpen(false);
   }
 
-  function handleSearch(searchQuery) {
+  function handleSearch(searchQuery: string) {
     setSearchQuery(searchQuery);
   }
 
-  function handlePageClick(page) {
+  function handlePageClick(page: number) {
     setCurrentPage(page);
   }
 
   function getPosts() {
-    let filteredPosts = posts;
+    let filteredPosts: Post[] = posts;
     if (searchQuery) {
-      filteredPosts = posts.filter((p) =>
+      filteredPosts = posts.filter((p: Post) =>
         p.title.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
@@ -101,7 +106,7 @@ export default function Posts() {
       <ConfirmModal
         isModalOpen={isModalOpen}
         header="Are you sure?"
-        body={`Are you sure you want to remove the post: ${selectedPost.title}`}
+        body={`Are you sure you want to remove the post: ${selectedPost?.title}`}
         onClickCancel={() => setIsModalOpen(false)}
         onClickOk={handleRemove}
       />

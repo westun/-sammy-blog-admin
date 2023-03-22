@@ -1,12 +1,13 @@
 import React from "react";
 import Modal from "react-modal";
 import ImageUpload from "../../pages/imageUpload";
+import { ImageDataDTO } from "./../../services/types";
 
 interface Props {
   isModalOpen: boolean;
   modalStyles?: any;
   onCloseModal: () => void;
-  onImageUploaded: () => void;
+  onImageUploaded: (imgData: ImageDataDTO) => void;
 }
 
 export default function ImageUploadModal({

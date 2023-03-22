@@ -1,8 +1,8 @@
 import React, { ChangeEvent } from "react";
 
 interface Props {
-  name: string;
-  value: string;
+  name?: string;
+  value?: string;
   onChange: (criteria: string) => void;
 }
 

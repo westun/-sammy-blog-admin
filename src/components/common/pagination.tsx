@@ -18,7 +18,7 @@ export default function Pagination({
   const pages: number[] = _.range(1, pageGroupCount);
 
   if (pages.length <= 1) {
-    return;
+    return null;
   }
 
   return (
